@@ -1,6 +1,7 @@
 import { Routes, Route } from "react-router-dom";
 import { Home } from "./pages/Home";
 import { DefaultLayout } from "./layout";
+import { IssuePage } from "./pages/Issue";
 
 
 
@@ -9,6 +10,7 @@ export const Router = () => {
         <Routes>
             <Route path="/" element={<DefaultLayout />}>
                <Route path='/' element={<Home />}/>
+               <Route path='/issue/:issueId' element={<IssuePage />}/>
             </Route>
         </Routes>
     )

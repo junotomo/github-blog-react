@@ -1,15 +1,30 @@
-import { Header, PostCardContainer } from "./styles";
 
-export function PostCard() {
+import { NavLink } from "react-router-dom";
+import { Header, PostCardContainer } from "./styles";
+import { formatDistanceToNow  } from "date-fns";
+
+interface CardProps {
+  title: string,
+  body: string,
+  createdAt: string,
+  issueId:number
+}
+
+export function PostCard({ title, body, createdAt, issueId} :CardProps) {
+    const daysDifference = formatDistanceToNow(createdAt) 
+    const handlePostClick = () => {}
+
     return(
-      <PostCardContainer>
+      <PostCardContainer onClick={handlePostClick}>
+        <NavLink to={`/issue/${issueId}`} title="issue">
+
+        
         <Header>
-          <span>TILELLLLEdsfdsfdsfdsfdsfsdfsdfsdfdsfsdfsdfsfdsf</span>
-          <span>há 6diaas</span>
+          <span>{title}</span>
+          <span>{daysDifference}</span>
         </Header>
-        <span>
-          asdsadasdasdasdadassdfdsfffffffffffffffffffffffffffffffffffffffffffffffffffffff\dsfewtreghfghfhgfghshgfh
-        </span>
+        <span>{body}</span>
+        </NavLink>
       </PostCardContainer>
     )
 }

@@ -1,17 +1,18 @@
-import axios from "axios"
-import { ReactNode, useEffect, useState } from "react"
-import { createContext } from "use-context-selector"
+import { ReactNode, createContext, useEffect, useState } from "react"
+
+import { api } from "../lib/axios";
 
 
 interface Post {
     title: string,
-    createdDate: string,
-    body: string
+    created_at: string,
+    body: string,
+    id: number
 }
 
 interface PostContextType {
-    posts: Post[];
-    fetchPosts: (query?: string) => Promise<void>
+    posts: Post[],
+    fetchIssues: (query?: string) => Promise<void>
 }
 
 export const PostContext = createContext({} as PostContextType)
@@ -20,37 +21,46 @@ interface PostProviderprops {
     children: ReactNode
 }
 
-export const PostProvider= ({ children }: PostProviderprops)=> {
+export function PostProvider({ children }: PostProviderprops){
 
     const [posts, setPosts] = useState<Post[]>([])
 
-    async function fetchPosts(query?:string) {
-        const repo = 'junotomo/coffee-delivery-react'
+    async function fetchIssues(query?: string) {
+        //dotenv.config(); 
+        //const repo = process.env.USERNAME + '/' + process.env.REPOSITORY
+        let issues 
 
-        const response = await axios.get('/search/issues',{
-            params: {
-                _sort:'createdAt',
-                _order: 'desc',
-                q: query,
-                repo:repo
-            }
-        })
-
-        const profileData = await response.data
-        console.log(profileData)
-        setPosts(profileData)
+        if(!query){
+            const queryParam = 'repo=rocketseat-education/reactjs-github-blog-challenge'
+            const response = await api.get('/search/issues',{
+                params: {
+                    q: queryParam
+                }
+            })
+            issues = await response.data
+        } else {
+            const response = await api.get('/search/issues',{
+                params: {
+                    q: query,
+                    repo:'rocketseat-education/reactjs-github-blog-challenge'
+                }
+            })
+            issues = await response.data
+        }
+        setPosts(issues.items)
     }
 
     useEffect(() => {
-        fetchPosts()
+        fetchIssues()
     },[])
 
     return (
         <PostContext.Provider
             value={{
                 posts,
-                fetchPosts
-            }}>
+                fetchIssues
+            }}
+        >
             {children}
         </PostContext.Provider>
     )

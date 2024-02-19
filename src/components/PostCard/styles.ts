@@ -5,21 +5,30 @@ export const PostCardContainer = styled.div`
     display: flex;
     flex-direction: column;
     gap: 1.125rem;
-    padding: 2rem;
     border: 1px solid transparent;
     border-radius: 10px;
     background: ${props => props.theme["base-post"]};
-
+    max-height: 16.25rem;
+    max-width: 26rem;
 
     &:hover {
         border: 1px solid ${props => props.theme["base-label"]};
         transition: 0.2s;
     }
 
+    a {
+        text-decoration: none;
+        padding: 2rem;
+    }
+
     span {
         ${mixins.fonts.textM}
+        display: -webkit-box;
+        -webkit-line-clamp: 4;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
         color: ${props => props.theme["base-text"]};
-        line-break: anywhere;
+        text-overflow: ellipsis;
     }
 `
 export const Header = styled.div`
