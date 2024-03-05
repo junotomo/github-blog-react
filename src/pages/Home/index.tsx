@@ -17,11 +17,11 @@ export function Home() {
                 {posts.map(post => {
                     return(
                         <PostCard
-                            key={post.id}
+                            key={post.number}
                             title={post.title}
                             createdAt={post.created_at}
                             body={post.body}
-                            issueId={post.id}
+                            issueNumber={post.number}
                         />
                     )
                 })}

@@ -7,16 +7,16 @@ interface CardProps {
   title: string,
   body: string,
   createdAt: string,
-  issueId:number
+  issueNumber:number
 }
 
-export function PostCard({ title, body, createdAt, issueId} :CardProps) {
+export function PostCard({ title, body, createdAt, issueNumber} :CardProps) {
     const daysDifference = formatDistanceToNow(createdAt) 
     const handlePostClick = () => {}
 
     return(
       <PostCardContainer onClick={handlePostClick}>
-        <NavLink to={`/issue/${issueId}`} title="issue">
+        <NavLink to={`/issue/${issueNumber}`} title="issue">
 
         
         <Header>

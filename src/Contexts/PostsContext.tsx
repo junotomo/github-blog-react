@@ -1,19 +1,18 @@
 import { ReactNode, createContext, useEffect, useState } from "react"
-
 import { api } from "../lib/axios";
-
 
 interface Post {
     title: string,
     created_at: string,
     body: string,
-    id: number
+    number: number
 }
 
 interface PostContextType {
     posts: Post[],
     fetchIssues: (query?: string) => Promise<void>
 }
+
 
 export const PostContext = createContext({} as PostContextType)
 
@@ -25,24 +24,22 @@ export function PostProvider({ children }: PostProviderprops){
 
     const [posts, setPosts] = useState<Post[]>([])
 
-    async function fetchIssues(query?: string) {
-        //dotenv.config(); 
-        //const repo = process.env.USERNAME + '/' + process.env.REPOSITORY
-        let issues 
 
+    async function fetchIssues(query?: string) {
+        let issues 
+        const userRepository = `repo:${import.meta.env.VITE_USERNAME}/${import.meta.env.VITE_REPOSITORY}`
         if(!query){
-            const queryParam = 'repo=rocketseat-education/reactjs-github-blog-challenge'
+           
             const response = await api.get('/search/issues',{
                 params: {
-                    q: queryParam
+                    q: userRepository
                 }
             })
             issues = await response.data
         } else {
             const response = await api.get('/search/issues',{
                 params: {
-                    q: query,
-                    repo:'rocketseat-education/reactjs-github-blog-challenge'
+                    q: `${(query ?? '')} ${userRepository}`
                 }
             })
             issues = await response.data

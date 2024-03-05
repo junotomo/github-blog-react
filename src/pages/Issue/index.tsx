@@ -2,7 +2,7 @@
 import { CalendarBlank, CaretLeft, ChatCircle, GithubLogo } from "phosphor-react";
 import { HeaderIcons, IssueHeader, IssuePageContainer, MarkDownContainer, PageLinks } from "./style";
 import Markdown from 'react-markdown'
-import { NavLink } from "react-router-dom";
+import { NavLink, useParams } from "react-router-dom";
 import goto from '../../assets/goto.svg'
 import { api } from "../../lib/axios";
 import { useState, useEffect } from "react";
@@ -29,9 +29,13 @@ export function IssuePage() {
             html_url: ''
         }
     )
-    
+
+    const {issueNumber} = useParams()
+    console.log(issueNumber)
     async function getIssue() {
-        const response = await api.get('https://api.github.com/repos/rocketseat-education/reactjs-github-blog-challenge/issues/1')
+        const issueURL = `${import.meta.env.VITE_BASE_URL}repos/${import.meta.env.VITE_USERNAME}/${import.meta.env.VITE_REPOSITORY}/issues`
+       console.log(issueURL)
+        const response = await api.get(`${issueURL}/${issueNumber}`)
         const data = await response.data
         console.log(data)
         const daysDifference = formatDistanceToNow(data.created_at) 
